@@ -1,35 +1,21 @@
 import { isPalindrome } from "./index";
 
 describe("palindrome checker", () => {
-  test("should confirm that 'mom' is palindrome", () => {
-    expect(isPalindrome("mom")).toBeTruthy();
+  test.each([
+    "mom",
+    "Mom",
+    "MoM",
+    "Was It A Rat I Saw",
+    "Never Odd or Even",
+    "1Never Odd or Even1",
+  ])("should confirm %s as palindrome", (val) => {
+    expect(isPalindrome(val)).toBeTruthy();
   });
 
-  test.each(["Mom", "MoM"])(
-    "should confirm %s is palindrome when is single uppercase word",
+  test.each(["Momx", "rocket", "JohnDeep", "That's not a palindrome", "Never Odd or Even1"])(
+    "should confirm %s is not palindrome",
     (val) => {
       expect(isPalindrome(val)).toBeTruthy();
-    }
-  );
-
-  test.each(["Momx", "rocket", "JohnDeep"])(
-    "should not confirm %s as palindrome",
-    (val) => {
-      expect(isPalindrome(val)).toBeFalsy();
-    }
-  );
-
-  test.each(["Was It A Rat I Saw", "Never Odd or Even", "1Never Odd or Even1"])(
-    "should confirm phrase (%s) as palindrome ",
-    (val) => {
-      expect(isPalindrome(val)).toBeTruthy();
-    }
-  );
-
-  test.each(["That's not a palindrome", "Never Odd or Even1"])(
-    "should not confirm phrase (%s) as palindrome ",
-    (val) => {
-      expect(isPalindrome(val)).toBeFalsy();
     }
   );
 });
