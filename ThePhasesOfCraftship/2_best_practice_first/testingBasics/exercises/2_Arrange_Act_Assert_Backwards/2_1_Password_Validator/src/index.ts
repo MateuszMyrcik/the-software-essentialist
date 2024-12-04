@@ -4,7 +4,9 @@ export class PasswordValidator {
   exec(input: string) {
     return {
       passed: false,
-      messages: [`incorrect password!: ${input}`],
+      messages: [
+        `Your password length is incorrect (between 5 an 15): ${input}`,
+      ],
     };
   }
 }

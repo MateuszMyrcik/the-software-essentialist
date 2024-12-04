@@ -26,4 +26,20 @@ describe("password validator", () => {
       verification.messages.every((msg) => typeof msg === "string")
     ).toBeTruthy();
   });
+
+  test.each(["shor", "tolongpasswordddddddddddd"])(
+    "should fail validation when password length is invalid",
+    (pass) => {
+      const validator = new PasswordValidator();
+
+      const verification = validator.exec(pass);
+
+      expect(verification.passed).toBeFalsy();
+      expect(verification.messages).toContain(
+        `Your password length is incorrect (between 5 an 15): ${pass}`
+      );
+    }
+  );
+
+  test("should return ");
 });
