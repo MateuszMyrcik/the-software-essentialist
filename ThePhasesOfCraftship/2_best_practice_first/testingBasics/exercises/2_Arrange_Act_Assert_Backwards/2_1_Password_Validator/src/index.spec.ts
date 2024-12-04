@@ -41,5 +41,15 @@ describe("password validator", () => {
     }
   );
 
-  test("should return ");
+  test("should fail when password not contain digit", () => {
+    const validator = new PasswordValidator();
+    const withoutDigitPass = "waswithnodigit";
+
+    const verification = validator.exec("waswithnodigit");
+
+    expect(verification.passed).toBeFalsy();
+    expect(verification.messages).toContain(
+      `Your password need include at least one digit: ${withoutDigitPass}`
+    );
+  });
 });
