@@ -6,11 +6,12 @@ export class PasswordValidator {
     const hasDigit = !!input.split("").filter((char) => !isNaN(Number(char)))
       .length;
     const hasValidLength = input.length >= 5 && input.length <= 15;
-
-    console.log({
-      hasDigit,
-      hasValidLength,
-    });
+    const hasUpperCaseLetter = input
+      .split("")
+      .some(
+        (char) =>
+          typeof char.toLowerCase() !== char && char.toUpperCase() === char
+      );
 
     if (!hasDigit) {
       messages.push(`Your password need include at least one digit: ${input}`);
@@ -22,6 +23,11 @@ export class PasswordValidator {
       );
     }
 
+    if (!hasUpperCaseLetter) {
+      messages.push(
+        `Your password need include at least one upper case letter: ${input}`
+      );
+    }
     return {
       passed: !messages.length,
       messages: messages,

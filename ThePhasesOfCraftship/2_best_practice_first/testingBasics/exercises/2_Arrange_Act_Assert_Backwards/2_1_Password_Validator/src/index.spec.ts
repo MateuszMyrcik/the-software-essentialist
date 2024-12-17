@@ -45,11 +45,23 @@ describe("password validator", () => {
     const validator = new PasswordValidator();
     const withoutDigitPass = "waswithnodigit";
 
-    const verification = validator.exec("waswithnodigit");
+    const verification = validator.exec(withoutDigitPass);
 
     expect(verification.passed).toBeFalsy();
     expect(verification.messages).toContain(
       `Your password need include at least one digit: ${withoutDigitPass}`
+    );
+  });
+
+  test("should fail when password not contain at least one upper case letter", () => {
+    const validator = new PasswordValidator();
+    const withoutUpperCaseLetter = "withoutuppercaseletter";
+
+    const verification = validator.exec(withoutUpperCaseLetter);
+
+    expect(verification.passed).toBeFalsy();
+    expect(verification.messages).toContain(
+      `Your password need include at least one upper case letter: ${withoutUpperCaseLetter}`
     );
   });
 });
