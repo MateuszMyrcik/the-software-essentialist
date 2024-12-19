@@ -3,15 +3,11 @@ export class PasswordValidator {
 
   exec(input: string) {
     const messages = [];
-    const hasDigit = !!input.split("").filter((char) => !isNaN(Number(char)))
-      .length;
+    const characters = input.split("");
+
+    const hasDigit = characters.some(this.isDigit);
     const hasValidLength = input.length >= 5 && input.length <= 15;
-    const hasUpperCaseLetter = input
-      .split("")
-      .some(
-        (char) =>
-          typeof char.toLowerCase() !== char && char.toUpperCase() === char
-      );
+    const hasUpperCaseLetter = input.split("").some(this.isUpperCase);
 
     if (!hasDigit) {
       messages.push(`Your password need include at least one digit: ${input}`);
@@ -33,4 +29,7 @@ export class PasswordValidator {
       messages: messages,
     };
   }
+
+  private isUpperCase = (char: string) => /^[A-Z]*$/.test(char);
+  private isDigit = (char: string) => !isNaN(Number(char));
 }

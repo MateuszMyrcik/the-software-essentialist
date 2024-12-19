@@ -27,8 +27,8 @@ describe("password validator", () => {
     ).toBeTruthy();
   });
 
-  test.each(["shor", "tolongpasswordddddddddddd"])(
-    "should fail validation when password length is invalid",
+  test.each(["shor", "tolongpasswordddddddddddd", "thePhysical1234567"])(
+    "should fail validation when password length is invalid (%s)",
     (pass) => {
       const validator = new PasswordValidator();
 
@@ -41,27 +41,31 @@ describe("password validator", () => {
     }
   );
 
-  test("should fail when password not contain digit", () => {
-    const validator = new PasswordValidator();
-    const withoutDigitPass = "waswithnodigit";
+  test.each(["maxwellTheBe", "waswithnodigit"])(
+    "should fail when password not contain digit (%s)",
+    (pass) => {
+      const validator = new PasswordValidator();
 
-    const verification = validator.exec(withoutDigitPass);
+      const verification = validator.exec(pass);
 
-    expect(verification.passed).toBeFalsy();
-    expect(verification.messages).toContain(
-      `Your password need include at least one digit: ${withoutDigitPass}`
-    );
-  });
+      expect(verification.passed).toBeFalsy();
+      expect(verification.messages).toContain(
+        `Your password need include at least one digit: ${pass}`
+      );
+    }
+  );
 
-  test("should fail when password not contain at least one upper case letter", () => {
-    const validator = new PasswordValidator();
-    const withoutUpperCaseLetter = "withoutuppercaseletter";
+  test.each(["withoutuppercaseletter", "maxwell1_c"])(
+    "should fail when password not contain at least one upper case letter (%s)",
+    (pass) => {
+      const validator = new PasswordValidator();
 
-    const verification = validator.exec(withoutUpperCaseLetter);
+      const verification = validator.exec(pass);
 
-    expect(verification.passed).toBeFalsy();
-    expect(verification.messages).toContain(
-      `Your password need include at least one upper case letter: ${withoutUpperCaseLetter}`
-    );
-  });
+      expect(verification.passed).toBeFalsy();
+      expect(verification.messages).toContain(
+        `Your password need include at least one upper case letter: ${pass}`
+      );
+    }
+  );
 });
