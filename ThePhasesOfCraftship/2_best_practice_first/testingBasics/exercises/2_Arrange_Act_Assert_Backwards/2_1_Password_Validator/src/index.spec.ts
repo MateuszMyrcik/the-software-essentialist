@@ -68,4 +68,16 @@ describe("password validator", () => {
       );
     }
   );
+
+  test.each(["qFC6xeHOi2N4Yt5", "9EblYuqa2zC16RA"])(
+    "should successfully validate password (%s)",
+    (pass) => {
+      const validator = new PasswordValidator();
+
+      const verification = validator.exec(pass);
+
+      expect(verification.passed).toBeTruthy();
+      expect(verification.messages.length).toEqual(0);
+    }
+  );
 });
