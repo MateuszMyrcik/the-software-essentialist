@@ -6,8 +6,8 @@ export class PasswordValidator {
     const characters = input.split("");
 
     const hasDigit = characters.some(this.isDigit);
-    const hasValidLength = input.length >= 5 && input.length <= 15;
-    const hasUpperCaseLetter = input.split("").some(this.isUpperCase);
+    const hasValidLength = characters.length >= 5 && characters.length <= 15;
+    const hasUpperCaseLetter = characters.some(this.isUpperCase);
 
     if (!hasDigit) {
       messages.push(`Your password need include at least one digit: ${input}`);
