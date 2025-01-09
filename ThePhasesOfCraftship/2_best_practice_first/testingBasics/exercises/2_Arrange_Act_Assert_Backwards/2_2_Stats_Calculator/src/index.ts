@@ -19,4 +19,21 @@ export class StatusCalculator {
 
     return min;
   }
+
+  public getMax() {
+    let max: number | undefined;
+
+    this.numberSequence.forEach((number) => {
+      if (!max) {
+        max = number;
+        return;
+      }
+    if (number >= max) {
+        max = number;
+        return;
+      }
+    });
+
+    return max;
+  }
 }

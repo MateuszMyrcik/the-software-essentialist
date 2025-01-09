@@ -16,4 +16,12 @@ describe("stats calculator", () => {
 
     expect(minimum).toBe(2);
   });
+
+  it("for given sequence of integers [2, 5, 9] maximum value was calculated", () => {
+    const stats = new StatusCalculator([2, 5, 9]);
+
+    const maximum = stats.getMax();
+
+    expect(maximum).toBe(9);
+  });
 });
