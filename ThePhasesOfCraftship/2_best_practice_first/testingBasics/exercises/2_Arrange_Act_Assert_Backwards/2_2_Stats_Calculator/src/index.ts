@@ -1,39 +1,32 @@
+type Stats = {
+  min: number;
+  max: number;
+};
 export class StatusCalculator {
-  constructor(private numberSequence: number[]) {
-    this.numberSequence = numberSequence;
-  }
+  static calculate(numberSequence: number[]) {
+    const stats: Partial<Stats> = {
+      min: undefined,
+      max: undefined,
+    };
 
-  public getMin() {
-    let min: number | undefined;
-
-    this.numberSequence.forEach((number) => {
-      if (!min) {
-        min = number;
+    numberSequence.forEach((number, index) => {
+      if (!index) {
+        stats.max = number;
+        stats.min = number;
         return;
       }
-      if (number <= min) {
-        min = number;
+
+      if (number <= (stats.min as number)) {
+        stats.min = number;
         return;
       }
-    });
 
-    return min;
-  }
-
-  public getMax() {
-    let max: number | undefined;
-
-    this.numberSequence.forEach((number) => {
-      if (!max) {
-        max = number;
-        return;
-      }
-    if (number >= max) {
-        max = number;
+      if (number >= (stats.max as number)) {
+        stats.max = number;
         return;
       }
     });
 
-    return max;
+    return stats;
   }
 }

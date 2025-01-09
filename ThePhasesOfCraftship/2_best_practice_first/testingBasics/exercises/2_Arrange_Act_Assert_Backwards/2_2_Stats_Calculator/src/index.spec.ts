@@ -10,18 +10,14 @@ import { StatusCalculator } from "./index";
 
 describe("stats calculator", () => {
   it("for given sequence of integers [2, 5, 9] minimum value was calculated", () => {
-    const stats = new StatusCalculator([2, 5, 9]);
+    const { min } = StatusCalculator.calculate([2, 5, 9]);
 
-    const minimum = stats.getMin();
-
-    expect(minimum).toBe(2);
+    expect(min).toBe(2);
   });
 
   it("for given sequence of integers [2, 5, 9] maximum value was calculated", () => {
-    const stats = new StatusCalculator([2, 5, 9]);
+    const { max } = StatusCalculator.calculate([2, 5, 9]);
 
-    const maximum = stats.getMax();
-
-    expect(maximum).toBe(9);
+    expect(max).toBe(9);
   });
 });
