@@ -15,27 +15,23 @@ describe("stats calculator", () => {
     );
   });
 
-  it("for given sequence of integers [2, 5, 9] minimum value was calculated", () => {
-    const { min } = StatusCalculator.calculate([2, 5, 9]);
+  it.each([
+    [[1, 2, 3, 4, 5, 6, 7, 8, 9], { min: 1, max: 9, length: 9, average: 5 }],
+    [
+      [2, 4, 21, -8, 53, 40],
+      { min: -8, max: 53, length: 6, average: 18.666666666667 },
+    ],
+    [[2, 5, 9], { min: 2, max: 9, length: 3, average: 5.333333333333 }],
+  ])(
+    "for given sequence %s calculate min, average and length",
+    (sequence, expectedStats) => {
+      const { average, length, max, min } =
+        StatusCalculator.calculate(sequence);
 
-    expect(min).toBe(2);
-  });
-
-  it("for given sequence of integers [2, 5, 9] maximum value was calculated", () => {
-    const { max } = StatusCalculator.calculate([2, 5, 9]);
-
-    expect(max).toBe(9);
-  });
-
-  it("for given sequence of integers [2,5,9] length was calculated", () => {
-    const { length } = StatusCalculator.calculate([2, 5, 9]);
-
-    expect(length).toBe(3);
-  });
-
-  it("for given sequence of integers [2,5,9] average was calculated", () => {
-    const { average } = StatusCalculator.calculate([2, 5, 9]);
-
-    expect(average).toBe(5.333333333333333);
-  });
+      expect(average).toBe(expectedStats.average);
+      expect(min).toBe(expectedStats.min);
+      expect(max).toBe(expectedStats.max);
+      expect(length).toBe(expectedStats.length);
+    }
+  );
 });

@@ -31,7 +31,7 @@ export class StatusCalculator {
       }
     });
 
-    stats.average = totalSum / stats.length;
+    stats.average = Number((totalSum / stats.length).toFixed(12));
 
     return stats;
   }
