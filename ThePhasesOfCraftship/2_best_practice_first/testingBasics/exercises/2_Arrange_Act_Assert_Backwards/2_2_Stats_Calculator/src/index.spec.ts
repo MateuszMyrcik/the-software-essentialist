@@ -32,4 +32,10 @@ describe("stats calculator", () => {
 
     expect(length).toBe(3);
   });
+
+  it("for given sequence of integers [2,5,9] average was calculated", () => {
+    const { average } = StatusCalculator.calculate([2, 5, 9]);
+
+    expect(average).toBe(5.333333333333333);
+  });
 });
