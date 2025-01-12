@@ -9,6 +9,12 @@ import { StatusCalculator } from "./index";
 // minimum value = -8, maximum value = 53, number of elements in the sequence = 6, average value = 18.666666666667
 
 describe("stats calculator", () => {
+  it("for empty sequence throw an error", () => {
+    expect(() => StatusCalculator.calculate([])).toThrow(
+      "Provide at least 1 element sequence"
+    );
+  });
+
   it("for given sequence of integers [2, 5, 9] minimum value was calculated", () => {
     const { min } = StatusCalculator.calculate([2, 5, 9]);
 
