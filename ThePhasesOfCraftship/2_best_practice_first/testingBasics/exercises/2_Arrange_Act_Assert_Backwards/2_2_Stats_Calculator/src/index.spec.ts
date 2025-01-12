@@ -26,4 +26,10 @@ describe("stats calculator", () => {
 
     expect(max).toBe(9);
   });
+
+  it("for given sequence of integers [2,5,9] length was calculated", () => {
+    const { length } = StatusCalculator.calculate([2, 5, 9]);
+
+    expect(length).toBe(3);
+  });
 });

@@ -1,6 +1,7 @@
 type Stats = {
   min: number;
   max: number;
+  length: number;
 };
 export class StatusCalculator {
   static calculate(numberSequence: number[]): Stats {
@@ -11,21 +12,16 @@ export class StatusCalculator {
     const stats: Stats = {
       min: numberSequence[0],
       max: numberSequence[0],
+      length: numberSequence.length,
     };
 
-    numberSequence.forEach((number, index) => {
-      if (!index) {
-        stats.max = number;
+    numberSequence.forEach((number) => {
+      if (number <= stats.min) {
         stats.min = number;
         return;
       }
 
-      if (number <= (stats.min as number)) {
-        stats.min = number;
-        return;
-      }
-
-      if (number >= (stats.max as number)) {
+      if (number >= stats.max) {
         stats.max = number;
         return;
       }
