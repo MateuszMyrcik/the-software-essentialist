@@ -1,22 +1,19 @@
 export class MilitaryTimeValidator {
   constructor() {}
 
-  static isNumber(input: unknown) {
-    return !isNaN(Number(input));
-  }
-
   static exec(timeRange: string) {
-    const parts = timeRange.split(" ");
+    const [from, seperator, to] = timeRange.split(" ");
 
     const isCorrectFormat =
-      parts.length === 3 &&
-      MilitaryTimeValidator.isNumber(parts[0]) &&
-      parts[1] === "-" &&
-      MilitaryTimeValidator.isNumber(parts[2]);
+      timeRange.length === 13 &&
+      from.length === 5 &&
+      seperator.length === 1 &&
+      to.length === 5;
 
     if (!isCorrectFormat) {
-      throw new Error("Provide time range in valid format (hh:mm - hh:mm)");
+      throw new Error("Provide time range in valid format [from - to]");
     }
+
     return true;
   }
 }

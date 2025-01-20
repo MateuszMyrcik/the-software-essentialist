@@ -11,16 +11,24 @@ import { MilitaryTimeValidator } from "./index";
 // Draft requirements:
 // Hours has 0-23
 // Minutes has 0-59
-// You have input with specific format [time seperator time]
+// You have input with specific format [time separator time]
 // You have require time combined of minute and hour together
 // Time values need to be provided in ascending order
 
 describe("military time validator", () => {
-  it.each(["", "22", "22:11", "22:11 -", "22:11 - 23:1"])(
-    "Should throw bad format error when time range not provided in hh:mm - hh:mm [%s]",
-    (timeRange) => {
-      expect(() => MilitaryTimeValidator.exec(timeRange)).toThrow(
-        "Provide time range in valid format (hh:mm - hh:mm)"
+  it.each([
+    "",
+    "22",
+    "22:11",
+    "22:11 ",
+    "23:23 -",
+    "23:23 - 23",
+    "23:23 - 23:2",
+  ])(
+    "Should throw bad format error when time range not match [from - to] (%s)",
+    (notValidTimeRange) => {
+      expect(() => MilitaryTimeValidator.exec(notValidTimeRange)).toThrow(
+        "Provide time range in valid format [from - to]"
       );
     }
   );
