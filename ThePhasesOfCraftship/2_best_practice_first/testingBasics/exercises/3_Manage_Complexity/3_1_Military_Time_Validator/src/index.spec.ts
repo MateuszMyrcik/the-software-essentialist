@@ -32,4 +32,13 @@ describe("military time validator", () => {
       );
     }
   );
+
+  it.each(["24:11 - 22:11", "03:11 - 25:11"])(
+    "Should throw error when given hours is out of range [0-23]  (%s)",
+    (notValidTimeRange) => {
+      expect(() => MilitaryTimeValidator.exec(notValidTimeRange)).toThrow(
+        "Provide time range with hours in range (0-23)"
+      );
+    }
+  );
 });

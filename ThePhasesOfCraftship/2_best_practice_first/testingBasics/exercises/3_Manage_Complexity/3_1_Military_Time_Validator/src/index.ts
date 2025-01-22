@@ -14,6 +14,15 @@ export class MilitaryTimeValidator {
       throw new Error("Provide time range in valid format [from - to]");
     }
 
+    if (
+      Number(from.slice(0, 2)) < 0 ||
+      Number(from.slice(0, 2)) > 23 ||
+      Number(to.slice(0, 2)) < 0 ||
+      Number(to.slice(0, 2)) > 23
+    ) {
+      throw new Error("Provide time range with hours in range (0-23)");
+    }
+
     return true;
   }
 }
