@@ -66,4 +66,19 @@ describe("military time validator", () => {
       );
     }
   );
+
+  it("Should throw error when given time values are not subsequent", () => {
+    const notValidTimeRange = "02:01 - 00:00";
+
+    expect(() => MilitaryTimeValidator.exec(notValidTimeRange)).toThrow(
+      "Provide time range with subsequent values"
+    );
+  });
+
+  it.each(["01:12 - 14:32", "22:00 - 23:12"])(
+    "Should validate successfully correct time ranges (%s)",
+    (validTimeRange) => {
+      expect(MilitaryTimeValidator.exec(validTimeRange)).toBe(true);
+    }
+  );
 });

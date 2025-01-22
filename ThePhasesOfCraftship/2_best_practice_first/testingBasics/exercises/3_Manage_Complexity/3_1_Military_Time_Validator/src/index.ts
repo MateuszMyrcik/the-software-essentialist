@@ -64,6 +64,13 @@ export class MilitaryTimeValidator {
       throw new Error("Provide time range with minutes in range (0-59)");
     }
 
+    if (
+      parsedInput.from.hours > parsedInput.to.hours ||
+      parsedInput.from.minutes >= parsedInput.to.minutes
+    ) {
+      throw new Error("Provide time range with subsequent values");
+    }
+
     return true;
   }
 }
