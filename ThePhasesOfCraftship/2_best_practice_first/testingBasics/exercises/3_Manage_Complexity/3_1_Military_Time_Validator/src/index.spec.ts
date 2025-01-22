@@ -50,7 +50,7 @@ describe("military time validator", () => {
   });
 
   it.each(["24:11 - 22:11", "03:11 - 25:11"])(
-    "Should throw error when given hours are out of range [0-23]  (%s)",
+    "Should throw error when given hours are out of range [0-23] (%s)",
     (notValidTimeRange) => {
       expect(() => MilitaryTimeValidator.exec(notValidTimeRange)).toThrow(
         "Provide time range with hours in range (0-23)"
@@ -59,7 +59,7 @@ describe("military time validator", () => {
   );
 
   it.each(["01:99 - 02:01", "01:02 - 02:99"])(
-    "Should throw error when given minutes are out of range [0-59]  (%s)",
+    "Should throw error when given minutes are out of range [0-59] (%s)",
     (notValidTimeRange) => {
       expect(() => MilitaryTimeValidator.exec(notValidTimeRange)).toThrow(
         "Provide time range with minutes in range (0-59)"

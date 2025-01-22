@@ -47,19 +47,19 @@ export class MilitaryTimeValidator {
     }
 
     if (
-      Number(from.slice(0, 2)) < 0 ||
-      Number(from.slice(0, 2)) > 23 ||
-      Number(to.slice(0, 2)) < 0 ||
-      Number(to.slice(0, 2)) > 23
+      parsedInput.from.hours < 0 ||
+      parsedInput.from.hours > 23 ||
+      parsedInput.to.hours < 0 ||
+      parsedInput.to.hours > 23
     ) {
       throw new Error("Provide time range with hours in range (0-23)");
     }
 
     if (
-      Number(from.slice(3, 5)) < 0 ||
-      Number(from.slice(3, 5)) > 59 ||
-      Number(to.slice(3, 5)) < 0 ||
-      Number(to.slice(3, 5)) > 59
+      parsedInput.from.minutes < 0 ||
+      parsedInput.from.minutes > 59 ||
+      parsedInput.to.minutes < 0 ||
+      parsedInput.to.minutes > 59
     ) {
       throw new Error("Provide time range with minutes in range (0-59)");
     }
