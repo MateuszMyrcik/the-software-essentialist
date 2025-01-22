@@ -14,6 +14,38 @@ export class MilitaryTimeValidator {
       throw new Error("Provide time range in valid format [from - to]");
     }
 
+    const parsedInput = {
+      from: {
+        hours: Number(from.slice(0, 2)),
+        separator: from.slice(2, 3),
+        minutes: Number(from.slice(3, 5)),
+      },
+      to: {
+        hours: Number(to.slice(0, 2)),
+        separator: to.slice(2, 3),
+        minutes: Number(to.slice(3, 5)),
+      },
+    };
+
+    if (
+      [
+        parsedInput.to.hours,
+        parsedInput.to.minutes,
+        parsedInput.from.hours,
+        parsedInput.from.minutes,
+      ].some(isNaN)
+    ) {
+      throw new Error("Provide time range with digit only values");
+    }
+
+    if (
+      [parsedInput.from.separator, parsedInput.to.separator].some(
+        (separator) => separator !== ":"
+      )
+    ) {
+      throw new Error("Separate time values with ':'");
+    }
+
     if (
       Number(from.slice(0, 2)) < 0 ||
       Number(from.slice(0, 2)) > 23 ||

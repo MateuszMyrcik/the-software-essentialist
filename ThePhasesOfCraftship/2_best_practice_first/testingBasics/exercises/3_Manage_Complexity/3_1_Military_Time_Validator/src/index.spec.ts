@@ -33,6 +33,22 @@ describe("military time validator", () => {
     }
   );
 
+  it("Should throw error when given values include not only digits", () => {
+    const notValidTimeRange = "2a:a2 - ab:dd";
+
+    expect(() => MilitaryTimeValidator.exec(notValidTimeRange)).toThrow(
+      "Provide time range with digit only values"
+    );
+  });
+
+  it("Should throw error when time values not separated with ':'", () => {
+    const notValidTimeRange = "22$22 - 23%23";
+
+    expect(() => MilitaryTimeValidator.exec(notValidTimeRange)).toThrow(
+      "Separate time values with ':'"
+    );
+  });
+
   it.each(["24:11 - 22:11", "03:11 - 25:11"])(
     "Should throw error when given hours are out of range [0-23]  (%s)",
     (notValidTimeRange) => {
