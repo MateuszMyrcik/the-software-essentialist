@@ -46,31 +46,41 @@ describe("boolean calculator", () => {
   it("should return false for 'FALSE' boolean expression", () => {
     const expression = "FALSE";
 
-    expect(BooleanCalculator.exec(expression)).toBe(false);
+    const calculator = new BooleanCalculator();
+
+    expect(calculator.exec(expression)).toBe(false);
   });
 
   it("should return true for 'TRUE' boolean expression", () => {
     const expression = "TRUE";
 
-    expect(BooleanCalculator.exec(expression)).toBe(true);
+    const calculator = new BooleanCalculator();
+
+    expect(calculator.exec(expression)).toBe(true);
   });
 
   it("should return true for 'NOT FALSE' boolean expression", () => {
     const expression = "NOT FALSE";
 
-    expect(BooleanCalculator.exec(expression)).toBe(true);
+    const calculator = new BooleanCalculator();
+
+    expect(calculator.exec(expression)).toBe(true);
   });
 
   it("should return false for 'NOT TRUE' boolean expression", () => {
     const expression = "NOT TRUE";
 
-    expect(BooleanCalculator.exec(expression)).toBe(false);
+    const calculator = new BooleanCalculator();
+
+    expect(calculator.exec(expression)).toBe(false);
   });
 
   it.each(["FALS3", "NEW OPERATOR", "MAYBE"])(
     "should throw an error when boolean expression include unsupported value or operator '%s'",
     (wrongExpression) => {
-      expect(() => BooleanCalculator.exec(wrongExpression)).toThrowError(
+      const calculator = new BooleanCalculator();
+
+      expect(() => calculator.exec(wrongExpression)).toThrowError(
         "Provide valid boolean expression"
       );
     }
