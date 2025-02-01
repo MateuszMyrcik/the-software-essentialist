@@ -48,4 +48,16 @@ describe("boolean calculator", () => {
 
     expect(BooleanCalculator.exec(expression)).toBe(true);
   });
+
+  it("should return true for 'NOT FALSE' boolean expression", () => {
+    const expression = "NOT FALSE";
+
+    expect(BooleanCalculator.exec(expression)).toBe(true);
+  });
+
+  it("should return false for 'NOT TRUE' boolean expression", () => {
+    const expression = "NOT TRUE";
+
+    expect(BooleanCalculator.exec(expression)).toBe(false);
+  });
 });

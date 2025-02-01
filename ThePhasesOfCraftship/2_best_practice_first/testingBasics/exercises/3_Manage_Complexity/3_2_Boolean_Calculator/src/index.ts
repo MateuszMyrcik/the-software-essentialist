@@ -5,6 +5,11 @@ export class BooleanCalculator {
     if (expression === "TRUE") {
       return true;
     }
+
+    if (expression === "NOT FALSE") {
+      return true;
+    }
+
     return false;
   }
 }
