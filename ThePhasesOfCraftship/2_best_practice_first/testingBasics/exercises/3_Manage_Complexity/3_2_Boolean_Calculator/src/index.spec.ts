@@ -36,6 +36,12 @@ import { BooleanCalculator } from "./index";
 
 // "(TRUE OR TRUE OR TRUE) AND FALSE" -> false "NOT (TRUE AND TRUE)" -> false
 
+// uppercase
+// format with empty spaces
+// accepted values: () / TRUE / FALSE / NOT / AND / OR
+// parenthesis need to be closed and opened
+// need to convert values
+
 describe("boolean calculator", () => {
   it("should return false for 'FALSE' boolean expression", () => {
     const expression = "FALSE";
@@ -60,4 +66,13 @@ describe("boolean calculator", () => {
 
     expect(BooleanCalculator.exec(expression)).toBe(false);
   });
+
+  it.each(["FALS3", "NEW OPERATOR", "MAYBE"])(
+    "should throw an error when boolean expression include unsupported value or operator '%s'",
+    (wrongExpression) => {
+      expect(() => BooleanCalculator.exec(wrongExpression)).toThrowError(
+        "Provide valid boolean expression"
+      );
+    }
+  );
 });
