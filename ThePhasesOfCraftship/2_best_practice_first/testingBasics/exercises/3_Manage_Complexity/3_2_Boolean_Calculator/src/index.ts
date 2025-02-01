@@ -5,7 +5,7 @@ type ExpressionSupportedCodes = SupportedValue | SupportedOperators;
 
 export class BooleanCalculator {
   private SUPPORTED_VALUES: SupportedValue[] = ["FALSE", "TRUE"];
-  private SUPPORTED_OPERATORS: SupportedOperators[] = ["NOT", "AND", "NOT"];
+  private SUPPORTED_OPERATORS: SupportedOperators[] = ["NOT", "AND", "OR"];
 
   constructor() {}
 
@@ -56,6 +56,16 @@ export class BooleanCalculator {
           }
 
           return [...acc.splice(0, -3), "TRUE"];
+        }
+
+        if (acc[curIndex - 1] === "OR") {
+          const firstValue = acc[curIndex - 2];
+          const secondValue = cur;
+          if ([firstValue, secondValue].includes("TRUE")) {
+            return [...acc.splice(0, -3), "TRUE"];
+          }
+
+          return [...acc.splice(0, -3), "FALSE"];
         }
 
         acc.push(cur);

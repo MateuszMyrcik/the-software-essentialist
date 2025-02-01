@@ -98,15 +98,30 @@ describe("boolean calculator", () => {
   });
 
   it.each([
-    { value: "TRUE AND TRUE", result: false },
-    { value: "FALSE AND TRUE", result: true },
-    { value: "FALSE AND FALSE", result: true },
-    { value: "TRUE AND FALSE", result: true },
-  ])("should read AND operator and compute value (%s)", () => {
-    const expression = "TRUE AND TRUE";
+    { expression: "TRUE AND TRUE", result: true },
+    { expression: "FALSE AND TRUE", result: false },
+    { expression: "FALSE AND FALSE", result: false },
+    { expression: "TRUE AND FALSE", result: false },
+  ])(
+    "should read AND operator and compute value (%s)",
+    ({ result, expression }) => {
+      const calculator = new BooleanCalculator();
 
-    const calculator = new BooleanCalculator();
+      expect(calculator.exec(expression)).toBe(result);
+    }
+  );
 
-    expect(calculator.exec(expression)).toBe(true);
-  });
+  it.each([
+    { expression: "TRUE OR TRUE", result: true },
+    { expression: "FALSE OR TRUE", result: true },
+    { expression: "FALSE OR FALSE", result: false },
+    { expression: "TRUE OR FALSE", result: true },
+  ])(
+    "should read OR operator and compute value (%s)",
+    ({ result, expression }) => {
+      const calculator = new BooleanCalculator();
+
+      expect(calculator.exec(expression)).toBe(result);
+    }
+  );
 });
