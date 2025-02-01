@@ -29,7 +29,7 @@ import { BooleanCalculator } from "./index";
 // OR
 // Here are some examples:
 
-// "TRUE OR TRUE OR TRUE AND FALSE" -> true "TRUE OR FALSE 
+// "TRUE OR TRUE OR TRUE AND FALSE" -> true "TRUE OR FALSE
 // AND NOT FALSE" -> true
 
 // 6. Parenthesis
@@ -41,5 +41,11 @@ describe("boolean calculator", () => {
     const expression = "FALSE";
 
     expect(BooleanCalculator.exec(expression)).toBe(false);
+  });
+
+  it("should return true for 'TRUE' boolean expression", () => {
+    const expression = "TRUE";
+
+    expect(BooleanCalculator.exec(expression)).toBe(true);
   });
 });
