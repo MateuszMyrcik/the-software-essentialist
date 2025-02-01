@@ -33,25 +33,34 @@ export class BooleanCalculator {
     let transformedParts = parts as ExpressionSupportedCodes[];
 
     while (transformedParts.length !== 1) {
-      if (transformedParts.includes("NOT")) {
-        transformedParts = transformedParts.reduce((acc, cur, curIndex) => {
-          if (!acc.length) {
-            acc.push(cur as ExpressionSupportedCodes);
-            return acc;
-          }
-
-          if (acc[curIndex - 1] === "NOT") {
-            if (cur === "TRUE") {
-              return [...acc.splice(0, -2), "FALSE"];
-            }
-            if (cur === "FALSE") {
-              return [...acc.splice(0, -2), "TRUE"];
-            }
-          }
-
+      transformedParts = transformedParts.reduce((acc, cur, curIndex) => {
+        if (!acc.length) {
+          acc.push(cur as ExpressionSupportedCodes);
           return acc;
-        }, [] as ExpressionSupportedCodes[]);
-      }
+        }
+
+        if (acc[curIndex - 1] === "NOT") {
+          if (cur === "TRUE") {
+            return [...acc.splice(0, -2), "FALSE"];
+          }
+          if (cur === "FALSE") {
+            return [...acc.splice(0, -2), "TRUE"];
+          }
+        }
+
+        if (acc[curIndex - 1] === "AND") {
+          const firstValue = acc[curIndex - 2];
+          const secondValue = cur;
+          if ([firstValue, secondValue].includes("FALSE")) {
+            return [...acc.splice(0, -3), "FALSE"];
+          }
+
+          return [...acc.splice(0, -3), "TRUE"];
+        }
+
+        acc.push(cur);
+        return acc;
+      }, [] as ExpressionSupportedCodes[]);
     }
 
     return transformedParts[0] === "TRUE" ? true : false;
