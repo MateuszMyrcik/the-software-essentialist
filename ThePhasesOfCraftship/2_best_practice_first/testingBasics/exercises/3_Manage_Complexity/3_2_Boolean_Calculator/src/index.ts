@@ -1,6 +1,8 @@
 type SupportedValue = "FALSE" | "TRUE";
 type SupportedOperators = "NOT" | "AND" | "OR";
 
+type ExpressionSupportedCodes = SupportedValue | SupportedOperators;
+
 export class BooleanCalculator {
   private SUPPORTED_VALUES: SupportedValue[] = ["FALSE", "TRUE"];
   private SUPPORTED_OPERATORS: SupportedOperators[] = ["NOT", "AND", "NOT"];
@@ -15,26 +17,43 @@ export class BooleanCalculator {
     return this.SUPPORTED_OPERATORS.includes(operator as SupportedOperators);
   }
 
-  private isValidExpressionFormat(expression: string) {
-    const parts = expression.split(" ");
+  private isValidExpressionFormat(parts: string[]) {
     return parts.every(
       (part) => this.isValidValue(part) || this.isValidOperator(part)
     );
   }
 
   exec(expression: string) {
-    if (!this.isValidExpressionFormat(expression)) {
+    const parts = expression.split(" ");
+
+    if (!this.isValidExpressionFormat(parts)) {
       throw Error("Provide valid boolean expression");
     }
 
-    if (expression === "TRUE") {
-      return true;
+    let transformedParts = parts as ExpressionSupportedCodes[];
+
+    while (transformedParts.length !== 1) {
+      if (transformedParts.includes("NOT")) {
+        transformedParts = transformedParts.reduce((acc, cur, curIndex) => {
+          if (!acc.length) {
+            acc.push(cur as ExpressionSupportedCodes);
+            return acc;
+          }
+
+          if (acc[curIndex - 1] === "NOT") {
+            if (cur === "TRUE") {
+              return [...acc.splice(0, -2), "FALSE"];
+            }
+            if (cur === "FALSE") {
+              return [...acc.splice(0, -2), "TRUE"];
+            }
+          }
+
+          return acc;
+        }, [] as ExpressionSupportedCodes[]);
+      }
     }
 
-    if (expression === "NOT FALSE") {
-      return true;
-    }
-
-    return false;
+    return transformedParts[0] === "TRUE" ? true : false;
   }
 }

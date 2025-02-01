@@ -85,4 +85,15 @@ describe("boolean calculator", () => {
       );
     }
   );
+
+  it.each([
+    { value: "TRUE", result: false },
+    { value: "FALSE", result: true },
+  ])("should read NOT operator and compute value %s", ({ result, value }) => {
+    const calculator = new BooleanCalculator();
+
+    const expression = `NOT ${value}`;
+
+    expect(calculator.exec(expression)).toBe(result);
+  });
 });
