@@ -124,4 +124,16 @@ describe("boolean calculator", () => {
       expect(calculator.exec(expression)).toBe(result);
     }
   );
+
+  it.each([
+    { expression: "TRUE OR TRUE OR TRUE AND FALSE", result: true },
+    { expression: "TRUE OR FALSE AND NOT FALSE", result: true },
+  ])(
+    "should respect NOT, AND, OR operators precedence %s",
+    ({ result, expression }) => {
+      const calculator = new BooleanCalculator();
+
+      expect(calculator.exec(expression)).toBe(result);
+    }
+  );
 });
