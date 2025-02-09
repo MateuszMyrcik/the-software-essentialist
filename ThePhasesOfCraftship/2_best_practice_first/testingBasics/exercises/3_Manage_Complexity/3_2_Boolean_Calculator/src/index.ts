@@ -9,21 +9,36 @@ export class BooleanCalculator {
 
   constructor() {}
 
-  private isValidValue(value: string): value is SupportedValue {
-    return this.SUPPORTED_VALUES.includes(value as SupportedValue);
+  calc(expression: string) {
+    const result = this.calcWithParenthesis(expression);
+
+    return result === "TRUE";
   }
 
-  private isValidOperator(operator: string): operator is SupportedOperators {
-    return this.SUPPORTED_OPERATORS.includes(operator as SupportedOperators);
+  private calcWithParenthesis(expression: string) {
+    let tempExpression = expression;
+
+    while (tempExpression.includes("(")) {
+      const openIndex = tempExpression.indexOf("(");
+      const closeIndex = this.findCloseIndex(openIndex, tempExpression);
+
+      const innerExpression = tempExpression.substring(
+        openIndex + 1,
+        closeIndex
+      );
+
+      const result = this.calcWithParenthesis(innerExpression);
+
+      tempExpression =
+        tempExpression.substring(0, openIndex) +
+        result +
+        tempExpression.substring(closeIndex + 1);
+    }
+
+    return this.calcPureExpression(tempExpression);
   }
 
-  private isValidExpressionFormat(parts: string[]) {
-    return parts.every(
-      (part) => this.isValidValue(part) || this.isValidOperator(part)
-    );
-  }
-
-  exec(expression: string) {
+  private calcPureExpression(expression: string) {
     const parts = expression.split(" ");
 
     if (!this.isValidExpressionFormat(parts)) {
@@ -126,6 +141,33 @@ export class BooleanCalculator {
       }
     }
 
-    return transformedParts[0] === "TRUE" ? true : false;
+    return transformedParts[0];
+  }
+
+  private findCloseIndex = (openIndex: number, expression: string) => {
+    let count = 1;
+    let position = openIndex;
+
+    while (count > 0) {
+      position++;
+      if (expression[position] === "(") count++;
+      if (expression[position] === ")") count--;
+    }
+
+    return position;
+  };
+
+  private isValidValue(value: string): value is SupportedValue {
+    return this.SUPPORTED_VALUES.includes(value as SupportedValue);
+  }
+
+  private isValidOperator(operator: string): operator is SupportedOperators {
+    return this.SUPPORTED_OPERATORS.includes(operator as SupportedOperators);
+  }
+
+  private isValidExpressionFormat(parts: string[]) {
+    return parts.every(
+      (part) => this.isValidValue(part) || this.isValidOperator(part)
+    );
   }
 }

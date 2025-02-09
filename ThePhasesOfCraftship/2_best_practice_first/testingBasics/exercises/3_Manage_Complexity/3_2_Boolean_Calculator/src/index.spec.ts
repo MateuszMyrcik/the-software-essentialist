@@ -48,7 +48,7 @@ describe("boolean calculator", () => {
 
     const calculator = new BooleanCalculator();
 
-    expect(calculator.exec(expression)).toBe(false);
+    expect(calculator.calc(expression)).toBe(false);
   });
 
   it("should return true for 'TRUE' boolean expression", () => {
@@ -56,7 +56,7 @@ describe("boolean calculator", () => {
 
     const calculator = new BooleanCalculator();
 
-    expect(calculator.exec(expression)).toBe(true);
+    expect(calculator.calc(expression)).toBe(true);
   });
 
   it("should return true for 'NOT FALSE' boolean expression", () => {
@@ -64,7 +64,7 @@ describe("boolean calculator", () => {
 
     const calculator = new BooleanCalculator();
 
-    expect(calculator.exec(expression)).toBe(true);
+    expect(calculator.calc(expression)).toBe(true);
   });
 
   it("should return false for 'NOT TRUE' boolean expression", () => {
@@ -72,7 +72,7 @@ describe("boolean calculator", () => {
 
     const calculator = new BooleanCalculator();
 
-    expect(calculator.exec(expression)).toBe(false);
+    expect(calculator.calc(expression)).toBe(false);
   });
 
   it.each(["FALS3", "NEW OPERATOR", "MAYBE"])(
@@ -80,7 +80,7 @@ describe("boolean calculator", () => {
     (wrongExpression) => {
       const calculator = new BooleanCalculator();
 
-      expect(() => calculator.exec(wrongExpression)).toThrowError(
+      expect(() => calculator.calc(wrongExpression)).toThrowError(
         "Provide valid boolean expression"
       );
     }
@@ -94,7 +94,7 @@ describe("boolean calculator", () => {
 
     const expression = `NOT ${value}`;
 
-    expect(calculator.exec(expression)).toBe(result);
+    expect(calculator.calc(expression)).toBe(result);
   });
 
   it.each([
@@ -107,7 +107,7 @@ describe("boolean calculator", () => {
     ({ result, expression }) => {
       const calculator = new BooleanCalculator();
 
-      expect(calculator.exec(expression)).toBe(result);
+      expect(calculator.calc(expression)).toBe(result);
     }
   );
 
@@ -121,7 +121,7 @@ describe("boolean calculator", () => {
     ({ result, expression }) => {
       const calculator = new BooleanCalculator();
 
-      expect(calculator.exec(expression)).toBe(result);
+      expect(calculator.calc(expression)).toBe(result);
     }
   );
 
@@ -133,7 +133,19 @@ describe("boolean calculator", () => {
     ({ result, expression }) => {
       const calculator = new BooleanCalculator();
 
-      expect(calculator.exec(expression)).toBe(result);
+      expect(calculator.calc(expression)).toBe(result);
+    }
+  );
+
+  it.each([
+    { expression: "(TRUE OR TRUE OR TRUE) AND FALSE", result: false },
+    { expression: "NOT (TRUE AND TRUE)", result: false },
+  ])(
+    "should read '()'  and compute values expression (%s)",
+    ({ result, expression }) => {
+      const calculator = new BooleanCalculator();
+
+      expect(calculator.calc(expression)).toBe(result);
     }
   );
 });
