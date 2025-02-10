@@ -47,102 +47,82 @@ export class BooleanCalculator {
 
     let transformedParts = parts as ExpressionSupportedCodes[];
 
-    while (transformedParts.length !== 1) {
-      const notOperatorIndex = transformedParts.findIndex(
-        (part) => part === "NOT"
-      );
-      const andOperatorIndex = transformedParts.findIndex(
-        (part) => part === "AND"
-      );
-      const orOperatorIndex = transformedParts.findIndex(
-        (part) => part === "OR"
-      );
-
-      if (notOperatorIndex > -1) {
-        transformedParts = transformedParts.reduce((acc, cur, curIndex) => {
-          if (!acc.length) {
-            acc.push(cur as ExpressionSupportedCodes);
-            return acc;
-          }
-
-          if (acc[curIndex - 1] === "NOT") {
-            if (cur === "TRUE") {
-              return [...acc.splice(0, -2), "FALSE"];
-            }
-            if (cur === "FALSE") {
-              return [...acc.splice(0, -2), "TRUE"];
-            }
-          }
-
-          acc.push(cur);
-          return acc;
-        }, [] as ExpressionSupportedCodes[]);
-        continue;
-      }
-
-      if (andOperatorIndex > -1) {
-        transformedParts = transformedParts.reduce((acc, cur, curIndex) => {
-          if (!acc.length) {
-            acc.push(cur as ExpressionSupportedCodes);
-            return acc;
-          }
-
-          if (acc[curIndex - 1] === "AND") {
-            const firstValueIndex = curIndex - 2;
-            const secondValueIndex = curIndex;
-            const operatorIndex = curIndex - 1;
-            const firstValue = acc[curIndex - 2];
-            const secondValue = cur;
-            acc[firstValueIndex] = "" as any;
-            acc[secondValueIndex] = "" as any;
-            if ([firstValue, secondValue].includes("FALSE")) {
-              acc[operatorIndex] = "FALSE";
-            } else {
-              acc[operatorIndex] = "TRUE";
-            }
-
-            return acc.filter((part) => !!part);
-          }
-
-          acc.push(cur);
-          return acc;
-        }, [] as ExpressionSupportedCodes[]);
-        continue;
-      }
-
-      if (orOperatorIndex > -1) {
-        transformedParts = transformedParts.reduce((acc, cur, curIndex) => {
-          if (!acc.length) {
-            acc.push(cur as ExpressionSupportedCodes);
-            return acc;
-          }
-
-          if (acc[curIndex - 1] === "OR") {
-            const firstValueIndex = curIndex - 2;
-            const secondValueIndex = curIndex;
-            const operatorIndex = curIndex - 1;
-            const firstValue = acc[curIndex - 2];
-            const secondValue = cur;
-            acc[firstValueIndex] = "" as any;
-            acc[secondValueIndex] = "" as any;
-            if ([firstValue, secondValue].includes("TRUE")) {
-              acc[operatorIndex] = "TRUE";
-            } else {
-              acc[operatorIndex] = "FALSE";
-            }
-
-            return acc.filter((part) => !!part);
-          }
-
-          acc.push(cur);
-          return acc;
-        }, [] as ExpressionSupportedCodes[]);
-        continue;
-      }
-    }
+    transformedParts = this.handleNot(transformedParts);
+    transformedParts = this.handleAnd(transformedParts);
+    transformedParts = this.handleOr(transformedParts);
 
     return transformedParts[0];
   }
+
+  private handleNot = (
+    expression: ExpressionSupportedCodes[]
+  ): ExpressionSupportedCodes[] => {
+    if (!expression.includes("NOT")) {
+      return expression;
+    }
+
+    const operatorIndex = expression.indexOf("NOT");
+    const valueIndex = operatorIndex + 1;
+    const value = expression[valueIndex];
+
+    const newValue: SupportedValue = value === "TRUE" ? "FALSE" : "TRUE";
+
+    const result = [
+      ...expression.slice(0, operatorIndex),
+      newValue,
+      ...expression.slice(valueIndex + 1),
+    ];
+
+    return this.handleNot(result);
+  };
+
+  private handleAnd = (
+    expression: ExpressionSupportedCodes[]
+  ): ExpressionSupportedCodes[] => {
+    if (!expression.includes("AND")) {
+      return expression;
+    }
+
+    const operatorIndex = expression.indexOf("AND");
+    const firstValue = expression[operatorIndex - 1];
+    const secondValue = expression[operatorIndex + 1];
+
+    const newValue: SupportedValue = [firstValue, secondValue].includes("FALSE")
+      ? "FALSE"
+      : "TRUE";
+
+    const result = [
+      ...expression.slice(0, operatorIndex - 1),
+      newValue,
+      ...expression.slice(operatorIndex + 2),
+    ];
+
+    return this.handleAnd(result);
+  };
+
+  private handleOr = (
+    expression: ExpressionSupportedCodes[]
+  ): ExpressionSupportedCodes[] => {
+    if (!expression.includes("OR")) {
+      return expression;
+    }
+
+    const operatorIndex = expression.indexOf("OR");
+    const firstValue = expression[operatorIndex - 1];
+    const secondValue = expression[operatorIndex + 1];
+
+    const newValue: SupportedValue = [firstValue, secondValue].includes("TRUE")
+      ? "TRUE"
+      : "FALSE";
+
+    const result = [
+      ...expression.slice(0, operatorIndex - 1),
+      newValue,
+      ...expression.slice(operatorIndex + 2),
+    ];
+
+    return this.handleAnd(result);
+  };
 
   private findCloseIndex = (openIndex: number, expression: string) => {
     let count = 1;
